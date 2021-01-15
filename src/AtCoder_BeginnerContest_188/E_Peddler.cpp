@@ -13,25 +13,51 @@ struct City
     long long int maxPrice; // max price in all cities from here
 };
 
+bool isEnd(struct City *city);
+long long int calcMaxPriceInNexts(struct City *city);
+long long int calcMaxPrice(struct City *city);
+long long int calcMaxBenefit(struct City *city);
+
+bool isEnd(struct City *city)
+{
+    return city->next.empty();
+}
+
+long long int calcMaxPriceInNexts(struct City *city)
+{
+    auto p = vector<long long int>();
+
+    for(unsigned int i = 0; i < city->next.size(); i++)
+        p.push_back(calcMaxPrice(city->next[i]));
+
+    long long int maxPrice = *(max_element(p.begin(), p.end()));
+
+    return maxPrice;
+}
+
 long long int calcMaxPrice(struct City *city)
 {
+    if(isEnd(city))
+        return city->price;
+
     if(city->calculated)
         return city->maxPrice;
 
-    if(city->next.empty())
-        return city->price;
-
-    long long int maxPrice = calcMaxPrice(city->next[0]);
-
-    for(unsigned int i = 1; i < city->next.size(); i++)
-    {
-        maxPrice = max(maxPrice, calcMaxPrice(city->next[i]) );
-    }
+    long long int maxPrice = max(calcMaxPriceInNexts(city), city->price);
 
     city->calculated = true;
     city->maxPrice = maxPrice;
     return maxPrice;
 }
+
+long long int calcMaxBenefit(struct City *city)
+{
+
+    long long int maxPrice = calcMaxPriceInNexts(city);
+
+    return maxPrice - city->price;
+}
+
 
 int main()
 {
@@ -55,24 +81,15 @@ int main()
         cities[from-1].next.push_back( &cities[to-1] );
     }
 
-    long long int maxBenefit = 0;
-    bool first = true; 
+    auto p = vector<long long int>();
 
     for(int i = 0; i < N; i++)
     {
-        if(!cities[i].next.empty())
-        {
-            if(first)
-            {
-                maxBenefit = calcMaxPrice( &cities[i] ) - cities[i].price;
-                first = false;
-            }
-            else
-            {
-                maxBenefit = max(maxBenefit, calcMaxPrice( &cities[i] ) - cities[i].price);
-            }
-        }
+        if(!isEnd(&cities[i]))
+            p.push_back(calcMaxBenefit(&cities[i]));
     }
+
+    long long int maxBenefit = *max_element(p.begin(), p.end());
 
     cout << maxBenefit << endl;
 
