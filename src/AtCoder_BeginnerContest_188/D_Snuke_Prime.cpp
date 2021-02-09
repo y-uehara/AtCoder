@@ -4,13 +4,6 @@
 
 using namespace std;
 
-struct Service
-{
-    long long int dStart;
-    long long int dEnd;
-    long long int price;
-};
-
 struct Event
 {
     long long int date;
@@ -23,7 +16,7 @@ int main()
     cin >> N >> C;
 
     long long int dStart, dEnd, price;
-    auto events = vector<struct Event>();
+    vector<Event> events;
 
     for(long long int i = 0; i < N; i++)
     {

@@ -4,16 +4,12 @@ using namespace std;
 
 int main()
 {
-    int X, Y, tmp;
+    int X, Y;
 
     cin >> X >> Y;
 
     if (Y > X)
-    {
-        tmp = Y;
-        Y = X;
-        X = tmp;
-    }
+        swap(X, Y);
 
     if (X < Y+3)
         cout << "Yes" << endl;

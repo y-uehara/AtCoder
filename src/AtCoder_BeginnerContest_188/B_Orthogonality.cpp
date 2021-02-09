@@ -9,18 +9,18 @@ int main()
 
     cin >> N;
 
-    auto A = vector<int>(N);
-    auto B = vector<int>(N);
+    vector<int> A(N);
+    vector<int> B(N);
 
     int acc = 0;
 
-    for (int i = 0; i < N; i++)
+    for (auto &v : A)
     {
-        cin >> A[i];
+        cin >> v;
     }
-    for (int i = 0; i < N; i++)
+    for (auto &v : B)
     {
-        cin >> B[i];
+        cin >> v;
     }
 
     for (int i = 0; i < N; i++)
